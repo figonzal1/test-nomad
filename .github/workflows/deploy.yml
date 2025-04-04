@@ -15,7 +15,7 @@ jobs:
 
       - name: Login to Harbor
         run: |
-          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login -u "${{ secrets.HARBOR_USER }}" --password-stdin 192.168.10.122
+          echo -n '${{ secrets.HARBOR_PASSWORD }}' | docker login -u '${{ secrets.HARBOR_USER }}' --password-stdin 192.168.10.122
 
       - name: Build and Push
         run: |
