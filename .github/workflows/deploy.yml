@@ -1,8 +1,10 @@
 name: Build, Push to Harbor & Deploy
 
 on:
-  push:
-    branches: [ "main" ]
+    push:
+      branches:
+        - main
+    workflow_dispatch:
 
 jobs:
   build:
