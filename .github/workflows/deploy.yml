@@ -1,0 +1,21 @@
+name: Build, Push to Harbor & Deploy
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: self-hosted  # 🔥 Usa tu runner en lugar de ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Login to Harbor
+        run: |
+          echo "${{ secrets.HARBOR_PASSWORD }}" | docker login -u "${{ secrets.HARBOR_USER }}" --password-stdin 192.168.10.122
+
+      - name: Build and Push
+        run: |
+          docker build -t 192.168.10.122/lightq/test-nomad:latest .
+          docker push 192.168.10.122/lightq/test-nomad:latest
