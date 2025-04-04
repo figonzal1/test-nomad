@@ -3,7 +3,7 @@ name: Build, Push to Harbor & Deploy
 on:
     push:
       branches:
-        - main
+        - master
     workflow_dispatch:
 
 jobs:
