@@ -30,6 +30,9 @@ job "mongo-replica-set" {
           exec docker-entrypoint.sh mongod --replSet rs0 --port ${NOMAD_PORT_mongo} --bind_ip_all --keyFile /data/configdb/keyfile
           EOF
         ]
+        volumes = [
+          "mongo-data1:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+        ]
       }
 
       env {
@@ -85,6 +88,9 @@ job "mongo-replica-set" {
           exec docker-entrypoint.sh mongod --replSet rs0 --port ${NOMAD_PORT_mongo} --bind_ip_all --keyFile /data/configdb/keyfile
           EOF
         ]
+        volumes = [
+          "mongo-data2:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+        ]
       }
 
       env {
@@ -139,6 +145,9 @@ job "mongo-replica-set" {
           exec docker-entrypoint.sh mongod --replSet rs0 --port ${NOMAD_PORT_mongo} --bind_ip_all --keyFile /data/configdb/keyfile
           EOF
         ]
+        volumes = [
+          "mongo-data3:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+        ]
       }
 
       env {
@@ -165,5 +174,18 @@ job "mongo-replica-set" {
         }
       }
     }
+  }
+
+  # Definición de los volúmenes de Docker
+  volume "mongo-data1" {
+    type = "docker"
+  }
+
+  volume "mongo-data2" {
+    type = "docker"
+  }
+
+  volume "mongo-data3" {
+    type = "docker"
   }
 }
