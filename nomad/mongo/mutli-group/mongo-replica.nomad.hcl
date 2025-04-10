@@ -176,16 +176,4 @@ job "mongo-replica-set" {
     }
   }
 
-  # Definición de los volúmenes de Docker
-  volume "mongo-data1" {
-    type = "docker"
-  }
-
-  volume "mongo-data2" {
-    type = "docker"
-  }
-
-  volume "mongo-data3" {
-    type = "docker"
-  }
 }
