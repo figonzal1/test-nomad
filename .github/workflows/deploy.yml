@@ -1,9 +1,6 @@
 name: Build, Push to Harbor & Deploy
 
 on:
-    push:
-      branches:
-        - master
     workflow_dispatch:
 
 jobs:
@@ -21,3 +18,11 @@ jobs:
         run: |
           docker build -t 192.168.10.122/lightq/test-nomad:latest .
           docker push 192.168.10.122/lightq/test-nomad:latest
+      
+  deploy:
+    runs-on: lightq
+    needs: build
+    steps:
+      - name: Deploy to Nomad
+        run: |
+          nomad job run nomad/nestjs.nomad.acl
