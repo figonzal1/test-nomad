@@ -4,10 +4,6 @@ job "mongo-replica-init" {
   datacenters = ["dc1"]
   type        = "batch" # Este job se ejecutará solo una vez
 
-  periodic {
-    prohibit_overlap = false  # Permite solapamientos
-  }
-
   group "init-replica" {
     count = 1
 
