@@ -4,6 +4,7 @@ job "mongo-replica-set" {
   datacenters = ["dc1"]
   type        = "service"
 
+
   // Grupo para el primer nodo del ReplicaSet
   group "mongo1" {
     network {
@@ -19,6 +20,7 @@ job "mongo-replica-set" {
       config {
         image = "mongo:latest"
         ports = ["mongo"]
+        force_pull = false
         entrypoint = [
           "bash", "-c",
           <<EOF
@@ -31,8 +33,11 @@ job "mongo-replica-set" {
           EOF
         ]
         volumes = [
-          "mongo-data1:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+          "mongo_data1:/data/db:rw",
+          "mongo_config1:/data/configdb:rw"
         ]
+
+        volume_driver = "local"
       }
 
       env {
@@ -77,6 +82,7 @@ job "mongo-replica-set" {
       config {
         image = "mongo:latest"
         ports = ["mongo"]
+        force_pull = false
         entrypoint = [
           "bash", "-c",
           <<EOF
@@ -89,8 +95,11 @@ job "mongo-replica-set" {
           EOF
         ]
         volumes = [
-          "mongo-data2:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+          "mongo_data2:/data/db:rw",
+          "mongo_config2:/data/configdb:rw"
         ]
+
+        volume_driver = "local"
       }
 
       env {
@@ -134,6 +143,7 @@ job "mongo-replica-set" {
       config {
         image = "mongo:latest"
         ports = ["mongo"]
+        force_pull = false
         entrypoint = [
           "bash", "-c",
           <<EOF
@@ -146,8 +156,11 @@ job "mongo-replica-set" {
           EOF
         ]
         volumes = [
-          "mongo-data3:/data/db" # Volumen de Docker para persistir los datos de MongoDB
+          "mongo_data3:/data/db:rw",
+          "mongo_config3:/data/configdb:rw"
         ]
+
+        volume_driver = "local"
       }
 
       env {
@@ -175,5 +188,4 @@ job "mongo-replica-set" {
       }
     }
   }
-
 }
