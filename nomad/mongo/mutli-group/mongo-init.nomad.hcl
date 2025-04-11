@@ -2,10 +2,14 @@
 # EJECUTAR DESPUES DE LANZAR LOS SERVICIOS
 job "mongo-replica-init" {
   datacenters = ["dc1"]
-  type        = "batch" # Este job se ejecutará solo una vez
+  type        = "batch"
 
   group "init-replica" {
     count = 1
+
+    network {
+      mode = "host"
+    }
 
     task "init" {
       driver = "docker"
@@ -19,31 +23,36 @@ job "mongo-replica-init" {
       template {
         data        = <<EOF
 #!/bin/sh
-# Usar las direcciones IP directamente desde las variables de Nomad
-MONGO1_IP="{{ range nomadService "mongo1" }}{{ .Address }}{{ end }}"
-MONGO2_IP="{{ range nomadService "mongo2" }}{{ .Address }}{{ end }}"
-MONGO3_IP="{{ range nomadService "mongo3" }}{{ .Address }}{{ end }}"
+# Usamos los DNS registrados en Consul
+MONGO1="mongo1.service.consul"
+MONGO2="mongo2.service.consul"
+MONGO3="mongo3.service.consul"
 
-# Esperar a que los servicios estén disponibles
-until mongosh --host $MONGO1_IP --port 27017 -u root -p example --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do
-  echo "Esperando a que mongo1 esté disponible..."
+# Esperamos a que el primer nodo esté listo
+until mongosh --host "$MONGO1" --port 27017 -u root -p example --eval 'db.runCommand({ ping: 1 })' >/dev/null 2>&1; do
+  echo "Esperando a que $MONGO1 esté disponible..."
   sleep 2
 done
 
-# Inicializar el replica set
-mongosh --host $MONGO1_IP --port 27017 -u root -p example --eval '
+# Inicializar el ReplicaSet
+mongosh --host "$MONGO1" --port 27017 -u root -p example --eval '
 rs.initiate({
   _id: "rs0",
   members: [
-    { _id: 0, host: "'$MONGO1_IP':27017" },
-    { _id: 1, host: "'$MONGO2_IP':27018" },
-    { _id: 2, host: "'$MONGO3_IP':27019" }
+    { _id: 0, host: "'$MONGO1':27017" },
+    { _id: 1, host: "'$MONGO2':27018" },
+    { _id: 2, host: "'$MONGO3':27019" }
   ]
 })
 '
 EOF
-        destination = "local/init-replica.sh" # <-- Añade esta línea
-        perms       = "755"                   # <-- Y esta para permisos de ejecución
+        destination = "local/init-replica.sh"
+        perms       = "755"
+      }
+
+      resources {
+        cpu    = 100
+        memory = 128
       }
     }
   }

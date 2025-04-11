@@ -18,8 +18,8 @@ job "mongo-replica-set" {
       driver = "docker"
 
       config {
-        image = "mongo:latest"
-        ports = ["mongo"]
+        image      = "mongo:latest"
+        ports      = ["mongo"]
         force_pull = false
         entrypoint = [
           "bash", "-c",
@@ -54,12 +54,12 @@ job "mongo-replica-set" {
       service {
         name     = "mongo1"
         port     = "mongo"
-        provider = "nomad"
+        provider = "consul"
 
 
         check {
           name     = "mongo-tcp-check"
-          type     = "tcp" # Cambiado de "script" a "tcp"
+          type     = "tcp"
           interval = "5s"
           timeout  = "2s"
         }
@@ -80,8 +80,8 @@ job "mongo-replica-set" {
       driver = "docker"
 
       config {
-        image = "mongo:latest"
-        ports = ["mongo"]
+        image      = "mongo:latest"
+        ports      = ["mongo"]
         force_pull = false
         entrypoint = [
           "bash", "-c",
@@ -116,7 +116,7 @@ job "mongo-replica-set" {
       service {
         name     = "mongo2"
         port     = "mongo"
-        provider = "nomad"
+        provider = "consul"
 
         check {
           name     = "mongo-tcp-check"
@@ -141,8 +141,8 @@ job "mongo-replica-set" {
       driver = "docker"
 
       config {
-        image = "mongo:latest"
-        ports = ["mongo"]
+        image      = "mongo:latest"
+        ports      = ["mongo"]
         force_pull = false
         entrypoint = [
           "bash", "-c",
@@ -177,7 +177,7 @@ job "mongo-replica-set" {
       service {
         name     = "mongo3"
         port     = "mongo"
-        provider = "nomad"
+        provider = "consul"
 
         check {
           name     = "mongo-tcp-check"
