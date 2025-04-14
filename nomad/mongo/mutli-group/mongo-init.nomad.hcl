@@ -35,13 +35,15 @@ until mongosh --host "$MONGO1" --port 27017 -u root -p example --eval 'db.runCom
 done
 
 # Inicializar el ReplicaSet
+# Para prohibir accesso externo, usar DNS de consul (mongo1.service.consul - mongo2.service.consul - mongo3.service.consul)
+# Para permitir conexion es directas externas usar IP de NODO.
 mongosh --host "$MONGO1" --port 27017 -u root -p example --eval '
 rs.initiate({
   _id: "rs0",
   members: [
-    { _id: 0, host: "'$MONGO1':27017" },
-    { _id: 1, host: "'$MONGO2':27018" },
-    { _id: 2, host: "'$MONGO3':27019" }
+    { _id: 0, host: "192.168.10.45:27017" },
+    { _id: 1, host: "192.168.10.45:27018" },
+    { _id: 2, host: "192.168.10.45:27019" }
   ]
 })
 '

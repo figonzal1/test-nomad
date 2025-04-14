@@ -7,12 +7,23 @@ job "mongo-replica-set" {
 
   // Grupo para el primer nodo del ReplicaSet
   group "mongo1" {
+
+    // Network en modo host (expone directo el puerto del nodo nomad)
     network {
       mode = "host"
       port "mongo" {
         static = 27017
       }
     }
+
+    // Configuracion de network en modo bridge (no expone al host y crea puertos random)
+    // Servicios deben conectarse a base de datos usando DNS consul.
+    #network {
+    #  mode = "bridge"
+    #  port "mongo" {
+    #    to = 27017 # Puerto interno en el contenedor
+    #  }
+    #}
 
     task "mongo" {
       driver = "docker"
