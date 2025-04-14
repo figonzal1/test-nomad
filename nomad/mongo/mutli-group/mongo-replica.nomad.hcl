@@ -55,6 +55,7 @@ job "mongo-replica-set" {
         name     = "mongo1"
         port     = "mongo"
         provider = "consul"
+        tags     = ["mongo-replica", "mongo1"]
 
 
         check {
@@ -117,6 +118,7 @@ job "mongo-replica-set" {
         name     = "mongo2"
         port     = "mongo"
         provider = "consul"
+        tags     = ["mongo-replica", "mongo2"]
 
         check {
           name     = "mongo-tcp-check"
@@ -178,6 +180,8 @@ job "mongo-replica-set" {
         name     = "mongo3"
         port     = "mongo"
         provider = "consul"
+        tags     = ["mongo-replica", "mongo3"]
+
 
         check {
           name     = "mongo-tcp-check"
