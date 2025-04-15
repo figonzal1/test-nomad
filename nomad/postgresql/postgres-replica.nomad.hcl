@@ -130,7 +130,7 @@ job "postgresql-replica" {
 
       lifecycle {
         hook    = "poststart"
-        sidecar = false
+        sidecar = true
       }
 
       env {
@@ -145,21 +145,17 @@ job "postgresql-replica" {
         PGPOOL_ADMIN_USERNAME    = "admin"
         PGPOOL_ADMIN_PASSWORD    = "admin123"
 
-        # Agregar estas variables al task pgpool
-        #PGPOOL_ENABLE_POOL_PASSWD   = "yes"
-        #PGPOOL_ENABLE_POOL_HBA      = "yes"
-        #PGPOOL_PASSWORD_HASH_METHOD = "scram-sha-256"
-        PGPOOL_REPMGR_USERNAME      = "repmgr"
-        PGPOOL_REPMGR_PASSWORD      = "repmgrpassword"
+        PGPOOL_REPMGR_USERNAME = "repmgr"
+        PGPOOL_REPMGR_PASSWORD = "repmgrpassword"
 
 
         # Failover automático
         PGPOOL_ENABLE_LOAD_BALANCING    = "yes"
-        PGPOOL_HEALTH_CHECK_PERIOD      = 10
-        PGPOOL_HEALTH_CHECK_TIMEOUT     = 10
-        PGPOOL_HEALTH_CHECK_MAX_RETRIES = 5
-        PGPOOL_HEALTH_CHECK_RETRY_DELAY = 1
-        PGPOOL_SR_CHECK_PERIOD          = 10
+        #PGPOOL_HEALTH_CHECK_PERIOD      = 10
+        #PGPOOL_HEALTH_CHECK_TIMEOUT     = 10
+        #PGPOOL_HEALTH_CHECK_MAX_RETRIES = 5
+        #PGPOOL_HEALTH_CHECK_RETRY_DELAY = 5
+        #PGPOOL_SR_CHECK_PERIOD          = 5
       }
 
       resources {
