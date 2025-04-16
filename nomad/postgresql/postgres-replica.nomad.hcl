@@ -130,7 +130,7 @@ job "postgresql-replica" {
 
       lifecycle {
         hook    = "poststart"
-        sidecar = true
+        sidecar = false
       }
 
       env {
