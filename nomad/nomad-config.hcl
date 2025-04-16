@@ -23,7 +23,13 @@ plugin "docker" {
 }
 
 consul {
-  address = "127.0.0.1:8500"
-  auto_advertise = true
+  address          = "127.0.0.1:8500"
+  auto_advertise   = true
   client_auto_join = true
+}
+
+vault {
+  #enabled = true
+  address = "127.0.0.1:8200"
+  token = ""
 }
